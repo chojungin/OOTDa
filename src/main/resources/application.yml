@@ -1,0 +1,30 @@
+spring:
+  devtools:
+    restart:
+      enabled: true #false
+    livereload:
+      enabled: true #false
+  security:
+    user:
+      password: 1
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/codidb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver  
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        #show_sql: true #System.out.print로 출력한다.        
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug #logger로 출력한다.
+        type: trace #parameter 값 출력
