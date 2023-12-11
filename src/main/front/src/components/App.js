@@ -14,10 +14,6 @@ import Setting from './Setting';
 
 function NavBar() {
 	
-	useEffect(()=>{
-		
-	}, []);
-	
 	return (
 		<Navbar bg="dark" data-bs-theme="dark">
         <Container>

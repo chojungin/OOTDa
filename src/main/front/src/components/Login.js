@@ -7,7 +7,6 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-
 function Login() {
 	
 	const [account, setAccount] = useState('');
@@ -44,8 +43,9 @@ function Login() {
 	            
 		        }).catch((error) => {
 
-					console.log("Error!! : "+error);
+					console.log("Error!! : " + error);
 		        	alert(error.response.data.message);
+		        	
 				});
 		        
 		} else if (!account){

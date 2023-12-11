@@ -17,9 +17,6 @@ import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
-//HTTP 요청을 처리하고 비즈니스 로직을 호출하는 내용을 작성
-
 @Slf4j
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -30,13 +27,14 @@ public class MemberController {
 	
 	@GetMapping("/get")
     public ResponseEntity<MemberResponse> getMember(@RequestHeader("Authorization") String accessToken) {
+		
 		try {
 			MemberResponse response = memberService.findMemberById(accessToken);
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(response);
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+			
 		} catch (Exception e) {
 			log.error("getMember Error : " + e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //403 AccessToken이 유효하지 않은 상태
 		}
     }
 	
@@ -45,22 +43,28 @@ public class MemberController {
     												@RequestBody MemberRequest request) {
 		try {
 			MemberResponse response = memberService.findMemberById(accessToken);
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(response);
+			//TODO
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+			
 		} catch (Exception e) {
 			log.error("putMember Error : " + e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //403 AccessToken이 유효하지 않은 상태
+			
+		} 
     }
 	
 	@PutMapping("/delete")
     public ResponseEntity<?> deleteMember(@RequestHeader("Authorization") String accessToken) {
+		
 		try {
 			memberService.findMemberById(accessToken);
+			//TODO
 			return ResponseEntity.status(HttpStatus.OK).build();
+			
 		} catch (Exception e) {
 			log.error("putMember Error : " + e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //403 AccessToken이 유효하지 않은 상태
+			
 		}
     }
 

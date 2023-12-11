@@ -55,7 +55,7 @@ public class TokenProvider {
                 .compact();
     }
     
-    //권한이 있는 토큰인지 여부
+    //토큰 유효성 검증
     public Boolean isValidateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -74,7 +74,7 @@ public class TokenProvider {
         } catch (IllegalArgumentException e) {
         	log.error("isValidateToken Error : JWT claims string is empty.");
         } catch (Exception e) {
-        	log.error("isValidateToken Error : "+e);
+        	log.error("isValidateToken Error : " + e);
         }
         return false;
     }

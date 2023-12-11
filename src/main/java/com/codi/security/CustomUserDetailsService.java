@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByMemberId(Long id) throws IllegalArgumentException {
 		
 		Member member = memberRepository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("해당 아이디의 회원 정보를 찾을 수 없습니다. ID = "+id)
+				() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다. \n member_id : "+id.toString())
 			);
 		return new CustomUserDetails(member);
 	}

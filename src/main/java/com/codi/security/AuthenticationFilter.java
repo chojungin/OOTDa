@@ -22,11 +22,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-//@Order(0) //의존성 주입 우선순위를 설정
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
+							//OncePerRequestFilter는 각 HTTP 요청에 대해 한 번만 실행되는 것을 보장한다. 
+							//HTTP 요청마다 JWT를 검증하는 것은 비효율적이기 때문에 OncePerRequestFilter를 상속함으로써 
+							//JWT 검증을 보다 효율적으로 수행할 수 있다.
 	
     private final TokenProvider tokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
@@ -61,7 +63,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 .orElse(null);
     }
     
-	//(2) 토큰에서 회원 아이디를 추출하여 확인 후 인증 토큰으로 반환 (회원정보, 패스워드, 권한)
+	//(2) 토큰에서 회원 아이디를 추출하여 확인 후 인증 토큰 발급 (회원정보, 패스워드는 null, 권한)
     private UsernamePasswordAuthenticationToken getAuthenticationFromToken(String token) {
         Long id = tokenProvider.getUserIdFromToken(token);
         UserDetails userDetails = customUserDetailsService.loadUserByMemberId(id);

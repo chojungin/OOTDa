@@ -18,6 +18,12 @@ import com.codi.exception.LoginFailedException;
 import com.codi.exception.MemberNotFoundException;
 import com.codi.service.AuthService;
 import com.codi.service.MemberService;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+
 import com.codi.dto.AuthRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +44,6 @@ public class AuthController {
     	log.info("*********Login*********");
 
     	try {
-    		
     		AuthResponse response = authService.login(request);
     		return ResponseEntity.status(HttpStatus.OK)
     				.header(HttpHeaders.LOCATION, "/setting")
@@ -65,12 +70,11 @@ public class AuthController {
 	public String duplicateCheck (@RequestParam String account) {
 		
     	try {
-    		
     		return memberService.validateDuplicateMember(account)
     				? "사용가능한 아이디입니다." : "이미 사용중인 아이디입니다.";
 			
 		} catch (Exception e) {
-			log.error("duplicateCheck Error : "+e);
+			log.error("duplicateCheck Error : " + e);
 			return "아이디 중복체크에 실패하였습니다.";
 		}
 	}
@@ -81,14 +85,13 @@ public class AuthController {
 		log.info("*********Join*********");
 		
 		try {
-			
 			memberService.saveMember(request);
 			return ResponseEntity.status(HttpStatus.OK)
 	                .header(HttpHeaders.LOCATION, "/login")
 	                .body("회원가입에 성공하였습니다.");
 			
 		} catch (Exception e) {
-			log.error("Join Error : "+e);
+			log.error("Join Error : " + e);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("회원가입에 실패하였습니다.");
 		}
@@ -96,14 +99,16 @@ public class AuthController {
 	}
 	
 	@GetMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestHeader("REFRESH_TOKEN") String refreshToken) {
-        String newAccessToken = authService.refreshToken(refreshToken);
-        return ResponseEntity.status(HttpStatus.OK).body(newAccessToken);
+    public ResponseEntity<?> refreshToken (@RequestHeader("REFRESH_TOKEN") String refreshToken) {
+		
+		try {
+			String newAccessToken = authService.refreshToken(refreshToken);
+	        return ResponseEntity.status(HttpStatus.OK).body(newAccessToken);
+	        
+		} catch (Exception e) {
+			log.error("refreshToken Error : " + e);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //401 RefreshToken이 유효하지 않은 상태(로그아웃 처리)
+		}
     }
-	
-	//private boolean isValidMember (MemberRequest request) {
-	    //return !request.getAccount().isEmpty() && !request.getPassword().isEmpty() &&
-	           //!request.getUserName().isEmpty() && request.getBirthDate() != null;
-	//}
-    
+	   
 }

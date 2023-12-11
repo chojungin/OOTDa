@@ -7,10 +7,10 @@ import App from './components/App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/common.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-root.render(
-  <BrowserRouter>
-  	<App />
-  </BrowserRouter>
-);
+ReactDOM
+	.createRoot(document.getElementById('root'))
+	.render(
+	  <BrowserRouter>
+	  	<App />
+	  </BrowserRouter>
+	);

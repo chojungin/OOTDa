@@ -16,8 +16,6 @@ import com.codi.security.TokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
-//데이터의 가공, 저장, 업데이트와 같은 비즈니스 로직을 작성
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -30,10 +28,13 @@ public class MemberService {
 	/**
      * 회원 정보 조회
      */
-    public MemberResponse findMemberById (String token){
-    	Long id = tokenProvider.getUserIdFromToken(token.substring(7));
+    public MemberResponse findMemberById (String accessToken){
+    	//액세스 토큰이 유효한 경우 회원 고유 아이디 추출하여 회원 정보 조회
+    	tokenProvider.isValidateToken(accessToken);
+    	
+		Long id = tokenProvider.getUserIdFromToken(accessToken.substring(7));
     	Member member = Optional.ofNullable(memberRepository.findMemberById(id)).orElseThrow(
-							() -> new IllegalArgumentException("회원 정보가 존재하지 않습니다. \n member_id : "+id.toString()));
+							() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다. \n member_id : "+id.toString()));
     	return new MemberResponse(member);
 	}
 	
