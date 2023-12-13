@@ -27,7 +27,6 @@ function Setting (){
 	
 	return (
 		<div className='container'>
-			<h1>Setting</h1>
 			{ACCESS_TOKEN ? (
 				<div className="d-grid gap-2">
 					<h4>{userName} : {roleType === 'ROLE_USER' ? '일반 사용자' : '관리자'}</h4>

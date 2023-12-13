@@ -16,6 +16,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @EnableWebSecurity
 @RequiredArgsConstructor

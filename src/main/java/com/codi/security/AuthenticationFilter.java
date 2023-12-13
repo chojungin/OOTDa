@@ -36,14 +36,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     //추출한 토큰 정보를 필터링하는 메소드
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        
+
     	//(1) Request의 Authorization 값에서 접두어 Bearer 를 확인하고 토큰 값만 추출
     	String accessToken = getTokenFromRequest(request);
     	
     	if (accessToken != null && tokenProvider.isValidateToken(accessToken)) { //권한이 있는 토큰인지 여부 확인
-    		
-    		log.info("*********Token Filtering*********");
-    		
+
     		//(2) 토큰에서 정보를 추출하여 확인 후 인증 토큰으로 반환하고 인증 정보를 등록
         	UsernamePasswordAuthenticationToken authentication = getAuthenticationFromToken(accessToken);
         	authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -65,7 +63,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     
 	//(2) 토큰에서 회원 아이디를 추출하여 확인 후 인증 토큰 발급 (회원정보, 패스워드는 null, 권한)
     private UsernamePasswordAuthenticationToken getAuthenticationFromToken(String token) {
-        Long id = tokenProvider.getUserIdFromToken(token);
+    	Long id = tokenProvider.getUserIdFromToken(token);
         UserDetails userDetails = customUserDetailsService.loadUserByMemberId(id);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
