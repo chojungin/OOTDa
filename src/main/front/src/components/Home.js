@@ -1,21 +1,34 @@
 import { useEffect, useState } from "react";
 import { reverseGeoAPI, forecastAPI } from "../api/GeoAPI";
-import { WiDegrees, WiCloudy, WiDaySunny, WiDust, WiRain, WiDayRain, WiSnow, WiThunderstorm } from "react-icons/wi";
+
+import { WiCloudy, WiDaySunny, WiDust, WiDayHaze, WiFog, WiSandstorm, WiSmoke, WiTornado, WiRainWind, WiRain, WiDayRain, WiSnow, WiThunderstorm } from "react-icons/wi";
+import { BsGeoAltFill } from "react-icons/bs";
+
 import Container from "react-bootstrap/esm/Container";
+import Card from 'react-bootstrap/Card';
+import NavBar from "./NavBar";
 
 function Home () {
 	
-	const [loading, setloading] = useState(true);
+	const [loading, setloading] = useState(false);
 	const [text, setText] = useState({ city: '', district: '', temp: '', sensTemp: '', maxTemp: '', minTemp: '', des: '' });
 	const icons = {
-	  "Thunderstorm" : <WiThunderstorm />,
-	  "Drizzle" : <WiDayRain />,
-	  "Rain" : <WiRain />,
-	  "Snow" : <WiSnow />,
-	  "Atmosphere" : <WiDust />,
-	  "Clear" : <WiDaySunny />,
-	  "Clouds" : <WiCloudy />,
-	  "degrees" : <WiDegrees />
+	  "Thunderstorm" : <WiThunderstorm size="80" opacity="0.7"/>,
+	  "Drizzle" : <WiDayRain size="80" opacity="0.7"/>,
+	  "Rain" : <WiRain size="80" opacity="0.7"/>,
+	  "Snow" : <WiSnow size="80" opacity="0.7"/>,
+	  "Atmosphere" : <WiDust size="80" opacity="0.7"/>,
+	  "Mist" : <WiFog size="80" opacity="0.7" />,
+	  "Smoke" : <WiSmoke size="80" opacity="0.7"/>,
+	  "Haze" : <WiDayHaze size="80" opacity="0.7"/>,
+	  "Dust" : <WiDust size="80" opacity="0.7"/>,
+	  "Fog" : <WiFog size="80" opacity="0.7"/>,
+	  "Sand" : <WiSandstorm size="80" opacity="0.7"/>,
+	  "Ash" : <WiDust size="80" opacity="0.7"/>,
+	  "Squall" : <WiRainWind size="80" opacity="0.7"/>,
+	  "Tornado" : <WiTornado size="80" opacity="0.7"/>,
+	  "Clear" : <WiDaySunny size="80" opacity="0.7"/>,
+	  "Clouds" : <WiCloudy size="80" opacity="0.7"/>
 	};
 	
 	useEffect(() => {
@@ -37,7 +50,7 @@ function Home () {
 						sensTemp: forecastData.main.feels_like, 
 						maxTemp: forecastData.main.temp_max, 
 						minTemp: forecastData.main.temp_min, 
-						des: forecastData.weather[0].main
+						des: forecastData.weather[0].main,
 					});
 					
 					setloading(true);
@@ -46,24 +59,33 @@ function Home () {
 				() => console.log("위치정보 제공동의거부"),
 				{ enableHighAccuracy : true, maximumAge : 30000, }
 			);
-	}, []);
+	}, [loading]);
 	
 	return (
-		<Container className="py-5">
-			{loading ? (
-				<>
-					<h1>내 위치</h1>
-					<h6>{text.city} {text.district}</h6>
-					
-					<h1>{icons[text.des]}</h1>
-					<h6>{text.des}</h6>
-					
-					<h2>{text.temp}{icons.degrees}</h2>
-					<h6>{text.maxTemp}/{text.minTemp}</h6>
-					
-				</>
-			) : <h1>위치정보 제공동의를 거부하셨습니다.</h1>}
-		</Container>
+		<div className="bg-dark text-light vh-100">
+			<Container className="py-3">
+				{ loading ? (
+					<>
+						<Card className="w-50 position-relative" bg='primary' text='light'>
+							<Card.Body >
+								<Card.Title className="fs-3"><BsGeoAltFill /> {text.district}</Card.Title>
+								<Card.Text className="fs-4">{parseFloat(text.temp).toFixed(1)}°</Card.Text>
+							</Card.Body>
+							<div className="position-absolute bottom-0 end-0 pe-3 pb-2">{icons[text.des]}</div>
+						</Card>
+					</>
+				) : (
+					<>
+						<Card className="w-50 position-relative" bg='secondary' text='light'>
+							<Card.Body >
+								<Card.Title className="fs-3"><BsGeoAltFill /> 위치정보없음</Card.Title>
+							</Card.Body>
+						</Card>
+					</>
+				)}
+			</Container>
+			<NavBar />
+		</div>
 	);
 }
 

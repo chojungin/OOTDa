@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
+import Header from './Header';
 
 function Login() {
 	
@@ -56,15 +57,15 @@ function Login() {
 	}
 	
   return (
-    <Container className="py-5">
-    	<h1>Login</h1>
+	<>
+	<Header />
+    <Container className="py-3">
     	<Form>
     		<Form.Group className="mb-3" as={Row}>
     			<Form.Label column sm="2">아이디</Form.Label>
 				<Col sm="10">
 					<Form.Control 
 						type="text" 
-						placeholder="Please enter your id."
 						value={account} 
 						onChange={(e) => setAccount(e.currentTarget.value)}
 					/>
@@ -75,7 +76,6 @@ function Login() {
 				<Col sm="10">
 					<Form.Control 
 						type="password" 
-						placeholder="Please enter your password."
 						value={password} 
 						onChange={(e) => setPassword(e.target.value)}
 					/>
@@ -102,6 +102,7 @@ function Login() {
 			)}
     	</Form>
     </Container>
+    </>
   );
 }
 

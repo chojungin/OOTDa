@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/esm/Container';
 
 import { AiTwotoneCrown } from "react-icons/ai";
 import profile from '../images/default.jpg';
+import NavBar from './NavBar';
 
 function Setting (){
 	
@@ -35,32 +36,35 @@ function Setting (){
 	}, [navigate]);
 	
 	return (
-		<Container className="py-5">
-			{ACCESS_TOKEN ? (
-				<>
-				<Stack direction="vertical" gap={2}>
-					<Stack direction="horizontal" gap={4}>
-			        	<Image src={profile} roundedCircle style={{ width: '100px', height : '100px'}}/>
-			        	<div>
-			        		<div className="fs-1 fw-bolder text-primary">{userName}</div>
-			        		<div className="fs-5 fw-normal text-secondary"><AiTwotoneCrown />{roleType === 'ROLE_USER' ? '일반 사용자' : '관리자'}</div>
-			        	</div>
+		<div className="bg-dark text-light vh-100">
+			<Container className="py-3">
+				{ACCESS_TOKEN ? (
+					<>
+					<Stack direction="vertical" gap={2}>
+						<Stack direction="horizontal" gap={4}>
+				        	<Image src={profile} roundedCircle style={{ width: '100px', height : '100px'}}/>
+				        	<div>
+				        		<div className="fs-1 fw-bolder text-primary">{userName}</div>
+				        		<div className="fs-5 fw-normal text-secondary"><AiTwotoneCrown />{roleType === 'ROLE_USER' ? '일반 사용자' : '관리자'}</div>
+				        	</div>
+						</Stack>
+						<hr/>
+						<Link to="/member" className="fs-5 fw-normal text-decoration-none text-dark">내 정보</Link>
+						<hr/>
+						<Link to="/member" className="fs-5 fw-normal text-decoration-none text-dark">설정</Link>
+						<hr/>
+						<Button variant="outline-secondary" size="lg" onClick={onClickLogout}>Logout</Button>
 					</Stack>
-					<hr/>
-					<Link to="/member" className="fs-5 fw-normal text-decoration-none text-dark">내 정보</Link>
-					<hr/>
-					<Link to="/member" className="fs-5 fw-normal text-decoration-none text-dark">설정</Link>
-					<hr/>
-					<Button variant="outline-secondary" size="lg" onClick={onClickLogout}>Logout</Button>
-				</Stack>
-				</>
-			):(
-				<div className="d-grid gap-2">
-					<Button variant="primary" size="lg" onClick={()=>navigate('/login')}>Login</Button>
-					<Button variant="link" size="lg" onClick={()=>navigate('/join')}>Join</Button>
-				</div>
-			)}
-    	</Container>
+					</>
+				):(
+					<div className="d-grid gap-2">
+						<Button variant="primary" size="lg" onClick={()=>navigate('/login')}>Login</Button>
+						<Button variant="link" size="lg" onClick={()=>navigate('/join')}>Join</Button>
+					</div>
+				)}
+	    	</Container>
+	    	<NavBar />
+    	</div>
 	)
 }
 

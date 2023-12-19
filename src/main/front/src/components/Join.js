@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/esm/Container';
+
+import Header from './Header';
 
 function Join() {
 	
@@ -99,33 +100,32 @@ function Join() {
     }
 	
 	return (
-		<Container className="py-5">
-	    	<h1>Join</h1>
+		<>
+		<Header />
+		<Container className="py-3">
 			<Form>
-				<InputGroup className="mb-3" as={Row}>
-					<Form.Label column sm="2">아이디</Form.Label>
-					<Col sm="8">
+				<Form.Group as={Row} className="mb-3">
+					<Form.Label column sm="2" xs="12">아이디</Form.Label>
+					<Col sm="8" xs="9">
 					    <Form.Control 
 							type="text" 
-							placeholder="id"
 							value={account} 
 							onChange={onChangeAccount}
 						/>
 				    </Col>
-				    <Col sm="2">
+				    <Col sm="2" xs="3">
 						{accountCheck ? (
-							  <Button variant="secondary" onClick={onCheckDuplicate}>Checked</Button>
+							  <Button variant="secondary" onClick={onCheckDuplicate}>checked</Button>
 							) : (
-							  <Button variant="primary" onClick={onCheckDuplicate}>Unchecked</Button>
+							  <Button variant="primary" onClick={onCheckDuplicate}>check</Button>
 							)}
 				    </Col>
-			    </InputGroup>
+			    </Form.Group>
 			    <Form.Group className="mb-3" as={Row}>
 					<Form.Label column sm="2">비밀번호</Form.Label>
 					<Col sm="10">
 						<Form.Control 
 							type="password" 
-							placeholder="password"
 							value={password} 
 							onChange={(e) => setPassword(e.target.value)}
 						/>
@@ -136,7 +136,6 @@ function Join() {
 					<Col sm="10" className="d-flex align-items-center">
 						<Form.Control 
 						  type="password" 
-						  placeholder="password check"
 						  value={passwordCheck}
 						  onChange={(e) => setPasswordCheck(e.target.value)}
 						/>
@@ -154,7 +153,6 @@ function Join() {
 					<Col sm="10">
 						<Form.Control 
 							type="text" 
-							placeholder="name"
 							value={userName} 
 							onChange={(e) => setName(e.target.value)}
 						/>
@@ -214,6 +212,7 @@ function Join() {
 				)}
 			</Form>
 	    </Container>
+	    </>
 	);
 }
 
