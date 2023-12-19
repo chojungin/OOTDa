@@ -1,29 +1,26 @@
-import { Route, Routes,} from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link, Route, Routes,} from 'react-router-dom';
 
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { BsEmojiSunglassesFill } from "react-icons/bs";
+import Nav from 'react-bootstrap/Nav';
+
+import { BsHouse, BsBookmark, BsBell, BsThreeDots } from "react-icons/bs";
 
 import Home from './Home';
 import Login from './Login';
 import Join from './Join';
 import Setting from './Setting';
-
+import Member from './Member';
 
 function NavBar() {
-	
 	return (
-		<Navbar bg="dark" data-bs-theme="dark">
-        <Container>
-          <Navbar.Brand href="/"><BsEmojiSunglassesFill/></Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="setting">Setting</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
+		<Navbar bg="dark" data-bs-theme="dark" fixed='bottom' className="px-5">
+			<Nav className="w-100 justify-content-between px-1 py-2">
+				<Link to="/"><BsHouse className="fs-1"/></Link>
+				<Link to="/"><BsBookmark className="fs-1"/></Link>
+				<Link to="/"><BsBell className="fs-1"/></Link>
+				<Link to="/setting"><BsThreeDots className="fs-1"/></Link>
+			</Nav>
+		</Navbar>
 	);
 }
 
@@ -36,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
         <Route path="/setting" element={<Setting />} />
+        <Route path="/member" element={<Member />} />
       </Routes>
       </>
   );

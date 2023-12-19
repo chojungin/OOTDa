@@ -13,6 +13,7 @@ import com.codi.dto.AuthRequest;
 import com.codi.dto.AuthResponse;
 import com.codi.entity.Auth;
 import com.codi.entity.Member;
+import com.codi.exception.InvalidTokenException;
 import com.codi.exception.LoginFailedException;
 import com.codi.exception.MemberNotFoundException;
 import com.codi.repository.AuthRepository;
@@ -84,18 +85,20 @@ public class AuthService {
 	}
 	
 	@Transactional
-	public String refreshToken(String refreshToken){
+	public String refreshToken(String refreshToken) throws InvalidTokenException{
 		//리프레시 토큰이 유효한 경우 권한 정보로 새로운 액세스 토큰을 생성하여 업데이트
-		tokenProvider.isValidateToken(refreshToken);
-		
-        Auth auth = authRepository.findAuthByRefreshToken(refreshToken).orElseThrow(() -> {
-	        			throw new IllegalArgumentException("refresh_token을 찾을 수 없습니다.\n refresh_token : " + refreshToken);
-	        		});
-        String newAccessToken = tokenProvider.createAccessToken(
-                new UsernamePasswordAuthenticationToken(
-                        new CustomUserDetails(auth.getMember()), auth.getMember().getPassword()));
-        auth.updateAccessToken(newAccessToken);
-        return newAccessToken;
+		if (tokenProvider.isValidateToken(refreshToken)) {
+			Auth auth = authRepository.findAuthByRefreshToken(refreshToken).orElseThrow(() -> {
+    			throw new IllegalArgumentException("refresh_token을 찾을 수 없습니다.");
+    		});
+			String newAccessToken = tokenProvider.createAccessToken(
+			        new UsernamePasswordAuthenticationToken(
+			                new CustomUserDetails(auth.getMember()), auth.getMember().getPassword()));
+			auth.updateAccessToken(newAccessToken);
+			return newAccessToken;
+		} else {
+			throw new InvalidTokenException("refresh_token이 유효하지 않습니다.");
+		}
 	}
 	
 }

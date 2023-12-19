@@ -46,7 +46,6 @@ public class AuthController {
     	try {
     		AuthResponse response = authService.login(request);
     		return ResponseEntity.status(HttpStatus.OK)
-    				.header(HttpHeaders.LOCATION, "/setting")
     				.body(response);
     		
         } catch (LoginFailedException e) {
@@ -87,7 +86,6 @@ public class AuthController {
 		try {
 			memberService.saveMember(request);
 			return ResponseEntity.status(HttpStatus.OK)
-	                .header(HttpHeaders.LOCATION, "/login")
 	                .body("회원가입에 성공하였습니다.");
 			
 		} catch (Exception e) {

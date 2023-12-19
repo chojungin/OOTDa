@@ -21,5 +21,4 @@ public class ViewController {
 	@GetMapping("/setting")
     public void setting() {
 	}
-	
 }

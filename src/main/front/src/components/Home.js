@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { reverseGeoAPI, forecastAPI } from "../api/GeoAPI";
 import { WiDegrees, WiCloudy, WiDaySunny, WiDust, WiRain, WiDayRain, WiSnow, WiThunderstorm } from "react-icons/wi";
+import Container from "react-bootstrap/esm/Container";
 
 function Home () {
 	
@@ -48,7 +49,7 @@ function Home () {
 	}, []);
 	
 	return (
-		<>
+		<Container className="py-5">
 			{loading ? (
 				<>
 					<h1>내 위치</h1>
@@ -62,7 +63,7 @@ function Home () {
 					
 				</>
 			) : <h1>위치정보 제공동의를 거부하셨습니다.</h1>}
-		</>
+		</Container>
 	);
 }
 

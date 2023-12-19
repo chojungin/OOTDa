@@ -14,15 +14,15 @@ export const tokenAPI = axios.create({
 });
 
 export const getMember = async () => {
-	if (ACCESS_TOKEN) {
-	    const response = await tokenAPI.get('/api/user/get');
-	    return response.data;
-    }
+    const response = await tokenAPI.get('/api/user/get');
+    return response.data;
 }
+
 export const putMember = async (data) => {
     const response = await tokenAPI.put('/api/user/put', data);
     return response.data;
 }
+
 export const deleteMember = async () => {
     await tokenAPI.delete('/api/user/delete');
 }

@@ -1,6 +1,5 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getMember } from '../api/TokenAPI';
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -10,10 +9,11 @@ import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/esm/Container';
 
-function Join() {
+function Member() {
 	
-	const [account, setAccount] = useState('');
-	const [accountCheck, setAccountCheck] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [member, setMember] = useState({});
+	
 	const [userName, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordCheck, setPasswordCheck] = useState('');
@@ -21,103 +21,35 @@ function Join() {
 	const [month, setMonth] = useState('');
 	const [day, setDay] = useState('');
 	
-	const navigate = useNavigate();
-    
-    //생년월일 생성
+	//생년월일 생성
 	const years = Array.from({ length: 80 }, (_,index) => new Date().getFullYear() - index);
 	const months = Array.from({ length: 12 }, (_,index) => String(index + 1).padStart(2, '0'));
 	const days = Array.from({ length: 31 }, (_,index) => String(index + 1).padStart(2, '0'));
 	
-	//생년월일 확인
-	const isBirthDate = Boolean(year && month && day);
-    
-    //비밀번호 일치 확인
-    const isPwMatched = password === passwordCheck;
-    
-    //아이디 설정
-    const onChangeAccount = (e) => {
-		setAccount(e.currentTarget.value);
-		setAccountCheck(false);
-	}
-    
-	//아이디 중복 확인
-	const onCheckDuplicate = async () => {
-
-		if (account) {
-			await axios.get('/api/auth/duplicateCheck', {
-				params : { 
-					account : account 
-				}
-			}).then((response) => {
-				
-				alert(response.data);
-				setAccountCheck(true);
-				
-			}).catch((error) => {
-				
-				console.log("Error!! : "+error);
-				setAccountCheck(false);
-			});
-			
-		} else {
-			alert("아이디를 입력해주세요.");
-			setAccountCheck(false);
-		}
-	};
 	
-	//필수 입력 항목 만족 확인
-	const isSatisfied = Boolean(account && accountCheck && userName && isBirthDate && isPwMatched);
-    
-	//회원 가입
-	const onClickRegist = async (e) => {
+	//비밀번호 일치 확인
+    const isPwMatched = password === passwordCheck;
+	
+	useEffect(() => {
 		
-		e.preventDefault();
+		setMember(getMember());
+		setLoading(true);
 		
-		if (isSatisfied) { //필수 입력 항목 만족 확인
-			
-			await axios.post('/api/auth/join', {
-				
-				account: account,
-				password: password,
-				userName: userName,
-				birthDate: year+month+day
-				
-			}).then((response) => {
-				
-				alert(response.data); //회원가입에 성공하였습니다.
-				navigate('/login');
-			  	
-			}).catch((error) => {
-				
-				console.log("Error!! : "+error);
-				alert(error.response.data); //회원가입에 실패하였습니다.
-			});
-			
-		} else {
-			alert("필수 항목을 모두 입력해주시기 바랍니다.");
-		}
-    }
+		console.log(loading + " \n " + member);
+		
+	},[]);
 	
 	return (
 		<Container className="py-5">
-	    	<h1>Join</h1>
 			<Form>
 				<InputGroup className="mb-3" as={Row}>
 					<Form.Label column sm="2">아이디</Form.Label>
-					<Col sm="8">
+					<Col sm="10">
 					    <Form.Control 
-							type="text" 
-							placeholder="id"
-							value={account} 
-							onChange={onChangeAccount}
+							type="text"
+							value={member.account}
+							readOnly
 						/>
-				    </Col>
-				    <Col sm="2">
-						{accountCheck ? (
-							  <Button variant="secondary" onClick={onCheckDuplicate}>Checked</Button>
-							) : (
-							  <Button variant="primary" onClick={onCheckDuplicate}>Unchecked</Button>
-							)}
 				    </Col>
 			    </InputGroup>
 			    <Form.Group className="mb-3" as={Row}>
@@ -126,7 +58,7 @@ function Join() {
 						<Form.Control 
 							type="password" 
 							placeholder="password"
-							value={password} 
+							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
 					</Col>
@@ -155,7 +87,7 @@ function Join() {
 						<Form.Control 
 							type="text" 
 							placeholder="name"
-							value={userName} 
+							value={member.userName} 
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</Col>
@@ -193,28 +125,10 @@ function Join() {
 					    </Form.Select>
 				    </Col>
 			    </Form.Group>
-			    {isSatisfied? (
-					<div className="d-grid gap-2">
-						<Button 
-							variant="primary" 
-							type="submit"
-							size="lg" 
-							onClick={onClickRegist}
-						>Join</Button>
-					</div>
-				):(
-					<div className="d-grid gap-2">
-						<Button 
-							variant="secondary" 
-							type="submit"
-							size="lg"
-							disabled
-						>Join</Button>
-					</div>
-				)}
 			</Form>
 	    </Container>
 	);
+	
 }
 
-export default Join;
+export default Member;

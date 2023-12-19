@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/esm/Container';
 
 function Login() {
 	
@@ -38,8 +39,7 @@ function Login() {
   				localStorage.setItem("userName", response.data.userName);
   				localStorage.setItem("roleType", response.data.roleType);
 	            
-	            navigate(response.headers.location);
-	            //window.location.href = `/home`;
+	            navigate('/');
 	            
 		        }).catch((error) => {
 
@@ -56,7 +56,7 @@ function Login() {
 	}
 	
   return (
-    <div className='container'>
+    <Container className="py-5">
     	<h1>Login</h1>
     	<Form>
     		<Form.Group className="mb-3" as={Row}>
@@ -101,7 +101,7 @@ function Login() {
 				</div>
 			)}
     	</Form>
-    </div>
+    </Container>
   );
 }
 
