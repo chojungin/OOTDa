@@ -103,8 +103,8 @@ function Join() {
 		<>
 		<Header />
 		<Container className="py-3">
-			<Form>
-				<Form.Group as={Row} className="mb-3">
+			<Form className="d-grid gap-3">
+				<Form.Group as={Row}>
 					<Form.Label column sm="2" xs="12">아이디</Form.Label>
 					<Col sm="8" xs="9">
 					    <Form.Control 
@@ -121,7 +121,7 @@ function Join() {
 							)}
 				    </Col>
 			    </Form.Group>
-			    <Form.Group className="mb-3" as={Row}>
+			    <Form.Group as={Row}>
 					<Form.Label column sm="2">비밀번호</Form.Label>
 					<Col sm="10">
 						<Form.Control 
@@ -131,7 +131,7 @@ function Join() {
 						/>
 					</Col>
 				</Form.Group>
-				<Form.Group className="mb-3 position-relative" as={Row}>
+				<Form.Group className="position-relative" as={Row}>
 					<Form.Label column sm="2">비밀번호확인</Form.Label>
 					<Col sm="10" className="d-flex align-items-center">
 						<Form.Control 
@@ -148,7 +148,7 @@ function Join() {
 						)}
 					</Col>
 				</Form.Group>
-				<Form.Group className="mb-3" as={Row}>
+				<Form.Group as={Row}>
 					<Form.Label column sm="2">이름</Form.Label>
 					<Col sm="10">
 						<Form.Control 
@@ -158,9 +158,9 @@ function Join() {
 						/>
 					</Col>
 				</Form.Group>
-				<Form.Group className="mb-3" as={Row}>
+				<Form.Group as={Row}>
 					<Form.Label column sm="2">생년월일</Form.Label>
-					<Col sm="4">
+					<Col sm="4" xs="4">
 						<Form.Select onChange={(e) => setYear(e.target.value)}>
 							<option value="">year</option>
 							{years.map((year) => (
@@ -170,7 +170,7 @@ function Join() {
 							))}
 					    </Form.Select>
 				    </Col>
-				    <Col sm="3">
+				    <Col sm="3" xs="4">
 						<Form.Select onChange={(e) => setMonth(e.target.value)}>
 							<option value="">month</option>
 							{months.map((month) => (
@@ -180,7 +180,7 @@ function Join() {
 							))}
 					    </Form.Select>
 				    </Col>
-				    <Col sm="3">
+				    <Col sm="3" xs="4">
 						<Form.Select onChange={(e) => setDay(e.target.value)}>
 							<option value="">day</option>
 							{days.map((day) => (
@@ -192,7 +192,7 @@ function Join() {
 				    </Col>
 			    </Form.Group>
 			    {isSatisfied? (
-					<div className="d-grid gap-2">
+					<div className="d-grid mt-5">
 						<Button 
 							variant="primary" 
 							type="submit"
@@ -201,7 +201,7 @@ function Join() {
 						>Join</Button>
 					</div>
 				):(
-					<div className="d-grid gap-2">
+					<div className="d-grid mt-5">
 						<Button 
 							variant="secondary" 
 							type="submit"

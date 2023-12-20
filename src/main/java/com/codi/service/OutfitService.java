@@ -5,9 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-//@Service
-//@Transactional(readOnly = true)
-//@RequiredArgsConstructor
-public class StyleService {
-
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class OutfitService {
+	
 }

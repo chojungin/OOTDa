@@ -46,9 +46,6 @@ public class Member{
 	@OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Auth auth;
 	
-	//@OneToMany(mappedBy = "member")
-    //private Set<MemberStyle> memberStyles = new HashSet<>();
-	
 	@Builder
 	public Member(
 		Long id,

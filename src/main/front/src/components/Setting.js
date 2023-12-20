@@ -49,18 +49,28 @@ function Setting (){
 				        	</div>
 						</Stack>
 						<hr/>
-						<Link to="/member" className="fs-5 fw-normal text-decoration-none text-dark">내 정보</Link>
+						<Link to="/member" className="fs-5 fw-normal text-decoration-none text-secondary">내 정보</Link>
 						<hr/>
-						<Link to="/member" className="fs-5 fw-normal text-decoration-none text-dark">설정</Link>
+						<Link to="/member" className="fs-5 fw-normal text-decoration-none text-secondary">설정</Link>
 						<hr/>
 						<Button variant="outline-secondary" size="lg" onClick={onClickLogout}>Logout</Button>
 					</Stack>
 					</>
 				):(
-					<div className="d-grid gap-2">
-						<Button variant="primary" size="lg" onClick={()=>navigate('/login')}>Login</Button>
-						<Button variant="link" size="lg" onClick={()=>navigate('/join')}>Join</Button>
-					</div>
+					<>
+					<Stack direction="vertical" gap={3}>
+						<Stack direction="horizontal" gap={4}>
+				        	<Image src={profile} roundedCircle style={{ width: '100px', height : '100px'}}/>
+				        	<div>
+				        		<div className="fs-2 fw-normal text-secondary">로그인을 해주세요.</div>
+				        	</div>
+						</Stack>
+						<Stack direction="vertical" gap={2}>
+							<Button variant="primary" size="lg" onClick={()=>navigate('/login')}>Login</Button>
+							<Button variant="link" size="lg" onClick={()=>navigate('/join')}>Join</Button>
+						</Stack>
+					</Stack>
+					</>
 				)}
 	    	</Container>
 	    	<NavBar />

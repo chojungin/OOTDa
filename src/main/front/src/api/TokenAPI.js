@@ -45,6 +45,9 @@ tokenAPI.interceptors.response.use(
 	async (error) => {
 		
 		if (error.config && error.response) {
+			
+			console.log("tokenAPI 인터셉터 :::: "+error);
+			
 			if (error.response.status === 403) { //403 Forbidden : AccessToken이 유효하지 않은 상태
 		        await refreshAccessToken();
 		        return tokenAPI(error.config);
