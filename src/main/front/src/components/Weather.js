@@ -3,14 +3,19 @@ import { reverseGeoAPI, forecastAPI } from "../api/GeoAPI";
 
 import { WiCloudy, WiDaySunny, WiDust, WiDayHaze, WiFog, WiSandstorm, WiSmoke, WiTornado, WiRainWind, WiRain, WiDayRain, WiSnow, WiThunderstorm } from "react-icons/wi";
 import { BsGeoAltFill } from "react-icons/bs";
+import { FaRegThumbsUp } from "react-icons/fa";
 
 import Container from "react-bootstrap/esm/Container";
 import Card from 'react-bootstrap/Card';
+import Stack from 'react-bootstrap/Stack';
+
+import axios from "axios";
 
 function Weather() {
 	
 	const [loading, setloading] = useState(false);
 	const [text, setText] = useState({ city: '', district: '', temp: '', sensTemp: '', maxTemp: '', minTemp: '', des: '' });
+	const [outfit, setOutfit] = useState([]);
 	
 	const icons = {
 	  "Thunderstorm" : <WiThunderstorm size="80" opacity="0.7"/>,
@@ -31,30 +36,6 @@ function Weather() {
 	  "Clouds" : <WiCloudy size="80" opacity="0.7"/>
 	};
 	
-	const outfit = () => {
-		let result;
-		if (text.sensTemp >= 28) {
-		    result = "BOILING";
-		} else if (text.sensTemp >= 23 && text.sensTemp <= 27) {
-		    result = "HOT";
-		} else if (text.sensTemp >= 20 && text.sensTemp <= 22) {
-		    result = "WARM";
-		} else if (text.sensTemp >= 17 && text.sensTemp <= 19) {
-		    result = "NOTWARM";
-		} else if (text.sensTemp >= 12 && text.sensTemp <= 16) {
-		    result = "CRISP";
-		} else if (text.sensTemp >= 9 && text.sensTemp <= 11) {
-		    result = "COLD";
-		} else if (text.sensTemp >= 5 && text.sensTemp <= 8) {
-		    result = "COLDER";
-		} else if (text.sensTemp <= 4) {
-		    result = "FREEZING";
-		} else {
-		    result = null;
-		}
-		return result;
-	}
-	
 	useEffect(() => {
 		navigator.geolocation
 			.getCurrentPosition(
@@ -66,7 +47,7 @@ function Weather() {
 					let reverseGeoData = await reverseGeoAPI(lon,lat);
 					let forecastData = await forecastAPI(lon,lat);
 					
-					console.log(forecastData);
+					//console.log(forecastData);
 					
 					setText({
 						city: reverseGeoData.region_1depth_name,
@@ -79,7 +60,20 @@ function Weather() {
 					});
 					
 					setloading(true);
-				    
+					
+					if (text.sensTemp !== ""){
+						axios.create({
+						    headers: {
+						        'temp': text.sensTemp
+						    },
+						}).get(`/api/outfit/get`)
+						.then((response) => {
+							setOutfit(response.data);
+						}).catch((error) => {
+							console.log(error);
+						});
+					}
+					
 				},(error) => {
 					
 					switch(error.code) {
@@ -111,13 +105,21 @@ function Weather() {
 			<Container className="py-3">
 				{ loading ? (
 					<>
-						<Card className="w-50 position-relative" bg='primary' text='light'>
-							<Card.Body >
-								<Card.Title className="fs-3"><BsGeoAltFill />{text.district}</Card.Title>
-								<Card.Text className="fs-4">{text.temp}°</Card.Text>
-							</Card.Body>
-							<div className="position-absolute bottom-0 end-0 pe-2 pb-2">{icons[text.des]}</div>
-						</Card>
+						<Stack direction="horizontal" gap={3}>
+							<Card className="w-50 position-relative" bg='primary' text='light'>
+								<Card.Body >
+									<Card.Title className="fs-3"><BsGeoAltFill />{text.district}</Card.Title>
+									<Card.Text className="fs-4">{text.temp}°</Card.Text>
+								</Card.Body>
+								<div className="position-absolute bottom-0 end-0 pe-2 pb-2">{icons[text.des]}</div>
+							</Card>
+							<Card className="w-auto" bg='warning' text='dark'>
+								<Card.Body>
+									<Card.Title className="fs-3"><FaRegThumbsUp />오늘 뭐입지?</Card.Title>
+									<Card.Text>{outfit}</Card.Text>
+								</Card.Body>
+							</Card>
+						</Stack>
 					</>
 				) : (
 					<>

@@ -1,12 +1,14 @@
 package com.codi.entity;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,22 +23,24 @@ public class Outfit {
 	@Column(name = "outfit_id")
 	private Long id;
 	
-	private String outfitCd;
+	private String outfitCode;
 	
 	private String outfitName;
 	
-	@OneToOne(mappedBy = "outfit", cascade = CascadeType.REMOVE)
-    private Item item;
+	private int temperature;
+	
+	@OneToMany(mappedBy = "outfit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items;
 
 	@Builder
 	public Outfit(
-		Long id, 
-		String outfitCd, 
-		String outfitName
+		String outfitCode, 
+		String outfitName,
+		int temperature
 	) {
-		this.id = id;
-		this.outfitCd = outfitCd;
+		this.outfitCode = outfitCode;
 		this.outfitName = outfitName;
+		this.temperature = temperature;
 	}
 	
 }

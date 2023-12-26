@@ -27,22 +27,7 @@ public class AdminInitializer implements ApplicationRunner {
 	private final PasswordEncoder passwordEncoder;
     
     @Override
-    public void run(ApplicationArguments args) {
-    	Outfit savedOutfit = outfitRepository.save(
-				Outfit.builder()
-					.outfitCd("B")
-					.outfitName("BOILING")
-					.build()
-			);
-    	
-    	itemRepository.save(
-				Item.builder()
-					.itemCd("SM_1")
-					.itemName("민소매")
-					.outfit(savedOutfit)
-					.build()
-			);
-    	
+    public void run(ApplicationArguments args) {    	
     	memberRepository.save(
 	        		Member.builder()
 		                .account("admin")

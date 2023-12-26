@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,23 +24,21 @@ public class Item {
 	@Column(name = "item_id")
 	private Long id;
 	
-	private String itemCd;
+	private String itemCode;
 	
 	private String itemName;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "outfit_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "outfit_id", referencedColumnName = "outfit_id", unique = false)
     private Outfit outfit;
 	
 	@Builder
 	public Item(
-		Long id, 
-		String itemCd, 
+		String itemCode, 
 		String itemName, 
 		Outfit outfit
 	) {
-		this.id = id;
-		this.itemCd = itemCd;
+		this.itemCode = itemCode;
 		this.itemName = itemName;
 		this.outfit = outfit;
 	}
