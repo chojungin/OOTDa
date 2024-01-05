@@ -58,3 +58,6 @@
   </tr> 
 </table>
 
+<h3>🔗View</h3>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/3402fe36-2e8e-44cb-830d-6202c32ee67e" style="width:300px; height:auto; display: inline;"/>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/9985a2b6-0fab-4f59-92a4-2e35e9fec69a" style="width:300px; height:auto; display: inline;"/>
