@@ -6,13 +6,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.codi.entity.Item;
 import com.codi.entity.Member;
-import com.codi.entity.Outfit;
 import com.codi.entity.RoleType;
-import com.codi.repository.ItemRepository;
 import com.codi.repository.MemberRepository;
-import com.codi.repository.OutfitRepository;
 
 import java.time.LocalDateTime;
 
@@ -20,10 +16,7 @@ import java.time.LocalDateTime;
 @Component
 public class AdminInitializer implements ApplicationRunner {
     
-	private final MemberRepository memberRepository;
-	private final OutfitRepository outfitRepository;
-	private final ItemRepository itemRepository;
-	
+	private final MemberRepository memberRepository;	
 	private final PasswordEncoder passwordEncoder;
     
     @Override

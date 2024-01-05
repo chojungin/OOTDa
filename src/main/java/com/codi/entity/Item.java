@@ -1,5 +1,11 @@
 package com.codi.entity;
 
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,11 +15,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
@@ -28,19 +35,21 @@ public class Item {
 	
 	private String itemName;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "outfit_id", referencedColumnName = "outfit_id", unique = false)
-    private Outfit outfit;
+    @JoinColumn(name = "temp_id")
+    private Temperature temperature;
+	
+	@OneToMany(mappedBy = "item")
+    private Set<PollItem> pollItems = new HashSet<>();
 	
 	@Builder
 	public Item(
 		String itemCode, 
-		String itemName, 
-		Outfit outfit
+		String itemName
 	) {
 		this.itemCode = itemCode;
 		this.itemName = itemName;
-		this.outfit = outfit;
 	}
 	
 }

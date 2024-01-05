@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/esm/Container';
 import { AiTwotoneCrown } from "react-icons/ai";
 import profile from '../images/default.jpg';
 import NavBar from './NavBar';
+import { clearLoginInfo } from '../api/TokenAPI';
 
 function Setting (){
 	
@@ -22,7 +23,8 @@ function Setting (){
 		e.preventDefault();
 		
 		if (window.confirm("로그아웃 하시겠습니까?")){
-			localStorage.clear();
+			//localStorage.clear();
+			clearLoginInfo();
 			window.location.href = "/";
 		}
 	}

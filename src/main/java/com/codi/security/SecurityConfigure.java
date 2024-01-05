@@ -34,6 +34,7 @@ public class SecurityConfigure {
     }
 	
 	//필터링을 하지 않는 URI
+	//front 이동에 대한 처리
     private static final String[] PERMIT_URI = new String[] {
     	"/",
     	"/login",
@@ -41,7 +42,7 @@ public class SecurityConfigure {
     	"/setting",
     	"/member",
     	"/images"
-	};
+	}; 
 	
 	@Order(0) //우선순위 설정
 	@Bean //Request Filter Bean
@@ -73,7 +74,8 @@ public class SecurityConfigure {
 		            		AntPathRequestMatcher.antMatcher("/api/auth/login"),
 		            		AntPathRequestMatcher.antMatcher("/api/auth/refresh"),
 		            		AntPathRequestMatcher.antMatcher("/api/user/get"),
-		            		AntPathRequestMatcher.antMatcher("/api/outfit/get")
+		            		AntPathRequestMatcher.antMatcher("/api/item/get"),
+		            		AntPathRequestMatcher.antMatcher("/api/poll/post")
 							).permitAll() //누구나 허용
 					.requestMatchers(
 			            	AntPathRequestMatcher.antMatcher("/api/user/put"),

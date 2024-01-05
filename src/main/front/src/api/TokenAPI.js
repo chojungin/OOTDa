@@ -37,6 +37,14 @@ const refreshAccessToken = async () => {
 	});
 }
 
+export const clearLoginInfo = () => {
+	localStorage.removeItem("tokenType");
+	localStorage.removeItem("accessToken");
+	localStorage.removeItem("refreshToken");
+	localStorage.removeItem("userName");
+	localStorage.removeItem("roleType");
+}
+
 //tokenAPI 인터셉터
 tokenAPI.interceptors.response.use(
 	(response) => {
@@ -53,7 +61,8 @@ tokenAPI.interceptors.response.use(
 		        return tokenAPI(error.config);
 		        
 		    } else if (error.response.status === 401) { //401 Unauthorized : RefreshToken이 유효하지 않은 상태
-				localStorage.clear();
+				//localStorage.clear();
+				clearLoginInfo();
 				alert("로그인이 만료되어 로그아웃 되었습니다.");
 				window.location.href = "/";
 			}
