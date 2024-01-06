@@ -29,12 +29,13 @@ export const deleteMember = async () => {
 
 //AccessToken을 refresh
 const refreshAccessToken = async () => {
-    await tokenAPI.get('/api/auth/refresh').then((response) => { 
-		//refresh 성공
-		ACCESS_TOKEN = response.data;
-		localStorage.setItem('accessToken', ACCESS_TOKEN);
-		tokenAPI.defaults.headers.common['Authorization'] = `${TOKEN_TYPE} ${ACCESS_TOKEN}`;
-	});
+    await tokenAPI.get('/api/auth/refresh')
+	    .then((response) => { 
+			//refresh 성공
+			ACCESS_TOKEN = response.data;
+			localStorage.setItem('accessToken', ACCESS_TOKEN);
+			tokenAPI.defaults.headers.common['Authorization'] = `${TOKEN_TYPE} ${ACCESS_TOKEN}`;
+		});
 }
 
 export const clearLoginInfo = () => {
