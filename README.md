@@ -58,6 +58,15 @@
   </tr> 
 </table>
 
-<h3>🔗View</h3>
-<image src="https://github.com/chojungin/OOTDa/assets/65849055/3402fe36-2e8e-44cb-830d-6202c32ee67e" style="width:300px; height:auto; display: inline;"/>
-<image src="https://github.com/chojungin/OOTDa/assets/65849055/9985a2b6-0fab-4f59-92a4-2e35e9fec69a" style="width:300px; height:auto; display: inline;"/>
+# 🔗View
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/a54ef131-67e1-430d-99dd-38802bc09479" style="width:33%; height:auto; display: inline;"/>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/7f94c55b-3390-4c2a-aa7a-eea2171662b9" style="width:33%; height:auto; display: inline;"/>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/7881ceb6-32af-4e3f-8f23-4d39fd051626" style="width:33%; height:auto; display: inline;"/>
+
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/6df0e1c7-7dac-471e-ac5e-3f5b834ee48b" style="width:33%; height:auto; display: inline;"/>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/9985a2b6-0fab-4f59-92a4-2e35e9fec69a" style="width:33%; height:auto; display: inline;"/>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/7514f93a-2431-4dcc-b156-071639a6189f" style="width:33%; height:auto; display: inline;"/>
+
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/571992ed-cfef-4bb4-8712-3e43863ab31d" style="width:33%; height:auto; display: inline;"/>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/2fe557ab-0d58-4d2f-a8ab-b0ebe1563a0a" style="width:33%; height:auto; display: inline;"/>
+<image src="https://github.com/chojungin/OOTDa/assets/65849055/55ccb9c5-7233-42b0-93f5-e506757e6554" style="width:33%; height:auto; display: inline;"/>
