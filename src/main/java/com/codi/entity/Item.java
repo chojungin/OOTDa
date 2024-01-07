@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,7 +41,7 @@ public class Item {
     @JoinColumn(name = "temp_id")
     private Temperature temperature;
 	
-	@OneToMany(mappedBy = "item")
+	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private Set<PollItem> pollItems = new HashSet<>();
 	
 	@Builder

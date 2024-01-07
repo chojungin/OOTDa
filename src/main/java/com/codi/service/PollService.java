@@ -1,7 +1,9 @@
 package com.codi.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class PollService {
 	private final ItemRepository itemRepository;
 	
 	@Transactional
-	public List<PollResponse> postPoll(PollRequest request) {
+	public Map<String, String> postPoll(PollRequest request) {
 		
 		Poll poll = pollRepository.save(
 			Poll.builder()
@@ -54,9 +56,17 @@ public class PollService {
 					.build()
 			);
 	    }
-		//투표 결과 보여주기
-		List<PollResponse> response = pollItemRepository.getPollResult(poll.getCity(), poll.getDistrict());
-		return response;
+
+		Map<String, String> returnMap = new HashMap<>(); 
+		returnMap.put("city", poll.getCity());
+		returnMap.put("district", poll.getDistrict());
+		
+		return returnMap;
+	}
+	
+	public List<PollResponse> getPoll(String city, String district) {
+		
+		return pollItemRepository.getPollResult(city, district);
 	}
 
 }

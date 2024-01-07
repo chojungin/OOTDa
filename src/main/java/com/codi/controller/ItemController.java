@@ -2,6 +2,8 @@ package com.codi.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +25,16 @@ public class ItemController {
 	
 	@GetMapping("/get")
 	public List<Item> getItems(@RequestHeader String temp) {
-		List<Item> itemList = itemService.getItems(temp);
-		return itemList;
+		
+		log.info("*********getItems*********");
+		try {
+			List<Item> itemList = itemService.getItems(temp);
+			return itemList;
+			
+		} catch (Exception e) {
+    		log.error("getItems Error : " + e);
+    		return null;
+    	}
 	}
 	
 }

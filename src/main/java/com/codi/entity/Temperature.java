@@ -32,6 +32,9 @@ public class Temperature {
     private int minTemp;
     
     private int maxTemp;
+    
+    @OneToMany(mappedBy = "temperature")
+    private List<Item> items;
 	
     @Builder
 	public Temperature(

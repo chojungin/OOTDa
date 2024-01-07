@@ -14,7 +14,6 @@ export const reverseGeoAPI = (longitude, latitude) => {
 		.then(response => {
 	    	return response.data.documents[0];
 		}).catch(error => console.log(error.message));
-	console.log("reverseGeoAPI : "+response);
 	return response;
 };
 
@@ -24,6 +23,5 @@ export const forecastAPI = (longitude, latitude) => {
 	    .then(response => {
 	        return response.data;
 		}).catch(error => console.log(error.message));
-	console.log("forecastAPI : "+response);
 	return response;
 };

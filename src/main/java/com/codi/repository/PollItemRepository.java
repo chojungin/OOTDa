@@ -21,8 +21,7 @@ public interface PollItemRepository extends JpaRepository<PollItem, Long>{
 			+ "WHERE c.city = :city "
 			+ "AND c.district = :district "
 			+ "AND FORMATDATETIME(c.createdAt, 'yyyy-MM-dd') = CURRENT_DATE "
-			+ "GROUP BY b.itemName")
-	List<PollResponse> getPollResult( @Param("city") String city,
-								@Param("district") String district);
+			+ "GROUP BY itemId, b.itemName, pollDate")
+	List<PollResponse> getPollResult(@Param("city") String city,@Param("district") String district);
 
 }

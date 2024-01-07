@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 //import { useQuery } from 'react-query';
 import axios from "axios";
 import { reverseGeoAPI, forecastAPI } from "../api/GeoAPI";
-import { outfitItemDataAPI } from "../api/ItemAPI";
+import { outfitItemDataAPI, outfitPollDataAPI } from "../api/ItemAPI";
 
 import { WiCloudy, WiDaySunny, WiDust, WiDayHaze, WiFog, WiSandstorm, WiSmoke, WiTornado, WiRainWind, WiRain, WiDayRain, WiSnow, WiThunderstorm } from "react-icons/wi";
 import { BsGeoAltFill, BsFillChatDotsFill, BsCheckCircleFill, BsCheckLg } from "react-icons/bs";
@@ -13,11 +13,12 @@ import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Stack from 'react-bootstrap/Stack';
 
-
 function Weather() {
 	
-	const [loading, setLoading] = useState(false); //로딩
-	const [pollYn, setPollYn] = useState(false); //설문여부
+	const year = new Date().getFullYear();
+	const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+	const day = new Date().getDate().toString().padStart(2, '0');
+	const now = `${year}-${month}-${day}`;
 	
 	//기상에 따라 표출될 기상 아이콘
 	const icons = {
@@ -48,26 +49,63 @@ function Weather() {
 	const [selectedItems, setSelectedItems] = useState([]); //설문에서 선택한 착장 아이템
 	const [pollResult, setPollResult] = useState([]); //기온별 착장 아이템 설문 결과
 	
+	const [loading, setLoading] = useState(false); //로딩
+	const [pollYn, setPollYn] = useState(false); //설문여부
+	
+	const FetchData = async () => {
+		
+		try {
+			const position = await FetchCurrentPositionData();
+			PositionCallback(position);
+		} catch (error) {
+			PositionErrorCallback(error);
+		}
+		debugger;
+		//TODO : localStorage에 저장되어있는 city와 district, selectedItems를 비교
+		if (
+			localStorage.getItem("pollDate") === now &&
+			localStorage.getItem("pollCity") === text.city &&
+			localStorage.getItem("pollDistrict") === text.district &&
+			localStorage.getItem("selectedItems") !== ''
+		) {
+			setPollYn(true);
+			selectedItems(localStorage.getItem("selectedItems"));
+			setPollResult(await outfitPollDataAPI(text.city, text.district));
+			
+		} else {
+			localStorage.removeItem("pollDate");
+			localStorage.removeItem("pollCity");
+			localStorage.removeItem("pollDistrict");
+			localStorage.removeItem("selectedItems");
+		}
+	}
+	
 	const FetchCurrentPositionData = () => {
 		
-		navigator.geolocation.getCurrentPosition(
-			PositionCallback, 
-			PositionErrorCallback,
-			{
-				timeout : 3600000, //3600000밀리초 = 60분
-				enableHighAccuracy : true, //위치정확도
-			}
-		);
-		
+		return new Promise((resolve, reject) => {
+			navigator.geolocation.getCurrentPosition(
+				resolve, 
+				reject,
+				{
+					timeout : 3600000, //3600000밀리초 = 60분
+					enableHighAccuracy : true, //위치정확도
+				}
+			);
+		});
 	}
 	
 	const PositionCallback = async (position) => {
-			
+		
 		const lon = position.coords.longitude; //경도 x
 		const lat = position.coords.latitude; //위도 y
 		
 		const reverseGeoData = await reverseGeoAPI(lon,lat);
 		const forecastData = await forecastAPI(lon,lat);
+		const outfitItemData = await outfitItemDataAPI(parseFloat(forecastData.main.feels_like).toFixed(0));
+		
+		console.log(reverseGeoData);
+		console.log(forecastData);
+		console.log(outfitItemData);
 		
 		setText({
 			city: reverseGeoData.region_1depth_name,
@@ -78,31 +116,24 @@ function Weather() {
 			minTemp: forecastData.main.temp_min, 
 			des: forecastData.weather[0].main,
 		});
-		
-		if (loading) {
-			const outfitItemData = await outfitItemDataAPI(text.sensTemp);
-			setItem(outfitItemData);
-			setPollItems(outfitItemData);
-		}
-		
+		setItem(outfitItemData);
+		setPollItems(outfitItemData);
 		setLoading(true);
+		
 	}
 	
 	const PositionErrorCallback = async (error) => {
 		
 		switch(error.code) {
 	        case error.PERMISSION_DENIED:
-	        console.log("위치정보제공 동의에 거부하셨습니다.");
+	        console.log(error.code+"위치정보제공 동의에 거부하셨습니다.");
 	        break;
-	
 	        case error.POSITION_UNAVAILABLE:
 	        console.log("위치정보가 존재하지않습니다.");
 	        break;
-	
 	        case error.TIMEOUT:
 	        console.log("요청 시간이 초과되었습니다.");
 	        break;
-	
 	        default:
 	        console.log("오류가 발생하였습니다. 다시 시도해주시기 바랍니다.");
 	    };
@@ -110,6 +141,7 @@ function Weather() {
 	
 	//설문 선택
 	const onSelectPollItem = async (id) => {
+		
 		const updatedSelection = [...selectedItems];
 		if (updatedSelection.includes(id)) {
 		  updatedSelection.splice(updatedSelection.indexOf(id), 1);
@@ -122,7 +154,7 @@ function Weather() {
 	//설문 제출
 	const onClickSubmitButton = async () => {
 		
-		axios.post(`/api/poll/post`, {
+		await axios.post(`/api/poll/post`, {
 			city : text.city,
 			district : text.district,
 			sensTemp : text.sensTemp,
@@ -130,10 +162,14 @@ function Weather() {
 		}).then((response) => {
 			
 			console.log(response.data); //0: {itemId: 9, itemName: '울코트', itemCount: 1, pollDate: '2024-01-05'}
+			
 			setPollResult(response.data);
 			setPollYn(true);
-			//localStorage.setItem("pollYn", "Y");
-			//localStorage.setItem("pollDate", pollResult[0].pollDate);
+			
+			localStorage.setItem("pollDate", response.data[0].pollDate);
+			localStorage.setItem("pollCity", text.city);
+			localStorage.setItem("pollDistrict", text.district);
+			localStorage.setItem("selectedItems", selectedItems);
 			
 		}).catch((error) => {
 			console.log(error);
@@ -141,8 +177,8 @@ function Weather() {
 	}
 	
 	useEffect(() => {
-		FetchCurrentPositionData();
-	}, [loading]);
+		FetchData();
+	}, []);
 	
 	if (!loading){
 		return (
@@ -198,8 +234,9 @@ function Weather() {
 				<Card.Body>
 					<Card.Title className="fs-3 d-flex align-items-center">
 						<BsCheckCircleFill size='25' className="me-2 top"/>
-						오늘 {text.district} 사람들은 뭐 입었지?
+						오늘 {text.district} 사람들은 뭐 입었지? 
 					</Card.Title>
+					(*{now} 기준)
 				</Card.Body>
 				<ListGroup>
 					{pollItems.map((pollItem) => (
