@@ -75,7 +75,7 @@ public class SecurityConfigure {
 		            		AntPathRequestMatcher.antMatcher("/api/auth/refresh"),
 		            		AntPathRequestMatcher.antMatcher("/api/user/get"),
 		            		AntPathRequestMatcher.antMatcher("/api/item/get"),
-		            		AntPathRequestMatcher.antMatcher("/api/poll/post")
+		            		AntPathRequestMatcher.antMatcher("/api/poll/**")
 							).permitAll() //누구나 허용
 					.requestMatchers(
 			            	AntPathRequestMatcher.antMatcher("/api/user/put"),

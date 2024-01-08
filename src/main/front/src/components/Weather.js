@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 //import { useQuery } from 'react-query';
 import axios from "axios";
 import { reverseGeoAPI, forecastAPI } from "../api/GeoAPI";
-import { outfitItemDataAPI, outfitPollDataAPI } from "../api/ItemAPI";
+import { outfitItemDataAPI, outfitPollDataAPI } from "../api/OutfitAPI";
 
 import { WiCloudy, WiDaySunny, WiDust, WiDayHaze, WiFog, WiSandstorm, WiSmoke, WiTornado, WiRainWind, WiRain, WiDayRain, WiSnow, WiThunderstorm } from "react-icons/wi";
 import { BsGeoAltFill, BsFillChatDotsFill, BsCheckCircleFill, BsCheckLg } from "react-icons/bs";
@@ -57,9 +57,14 @@ function Weather() {
 		try {
 			const position = await FetchCurrentPositionData();
 			PositionCallback(position);
+			
 		} catch (error) {
 			PositionErrorCallback(error);
 		}
+		
+	}
+	
+	const pollYnCheck = async () => {
 		debugger;
 		//TODO : localStorage에 저장되어있는 city와 district, selectedItems를 비교
 		if (
@@ -69,10 +74,14 @@ function Weather() {
 			localStorage.getItem("selectedItems") !== ''
 		) {
 			setPollYn(true);
-			selectedItems(localStorage.getItem("selectedItems"));
-			setPollResult(await outfitPollDataAPI(text.city, text.district));
+			setSelectedItems(localStorage.getItem("selectedItems"));
 			
-		} else {
+			const result = await outfitPollDataAPI(text.city, text.district);
+			console.log(result);			
+			setPollResult(result);
+			
+		} else if (localStorage.getItem("pollDate") !== now){
+			
 			localStorage.removeItem("pollDate");
 			localStorage.removeItem("pollCity");
 			localStorage.removeItem("pollDistrict");
@@ -180,6 +189,10 @@ function Weather() {
 		FetchData();
 	}, []);
 	
+	useEffect(() => {
+		pollYnCheck();
+	}, [loading]);
+	
 	if (!loading){
 		return (
 			<Card className="w-50 position-relative" bg='secondary' text='light'>
@@ -202,7 +215,7 @@ function Weather() {
 		<Card className="w-auto h-100" bg='primary' text='light'>
 			<Card.Body>
 				<Card.Title className="fs-3 d-flex align-items-center"><BsFillChatDotsFill size='25' className="me-2 top"/>오늘 뭐 입지?</Card.Title>
-				{items.map((badgeItem) => (
+				{items && items.map((badgeItem) => (
 		            <Badge bg="primary" text="light" className="border border-light m-1 fs-6" key={badgeItem.id}>
 		                {badgeItem.itemName}
 		            </Badge>
@@ -215,7 +228,7 @@ function Weather() {
 					<Card.Title className="fs-3 d-flex align-items-center"><BsCheckCircleFill size='25' className="me-2 top"/>오늘 뭘 입으셨나요?</Card.Title>
 				</Card.Body>
 				<ListGroup>
-					{pollItems.map((pollItem) => (
+					{pollItems && pollItems.map((pollItem) => (
 						<ListGroup.Item
 							action
 							variant={selectedItems.includes(pollItem.id) ? 'primary' : 'light'}
@@ -239,14 +252,14 @@ function Weather() {
 					(*{now} 기준)
 				</Card.Body>
 				<ListGroup>
-					{pollItems.map((pollItem) => (
+					{pollItems && pollItems.map((pollItem) => (
 						<ListGroup.Item
 							className="position-relative"
 							variant="secondary"
 							key={pollItem.id}
 						>
 							{selectedItems.includes(pollItem.id) && <BsCheckLg className="me-2"/>} {pollItem.itemName}
-							{pollResult.map((result) => (
+							{pollResult && pollResult.map((result) => (
 			                    result.itemId === pollItem.id ? (
 									<span className="position-absolute end-0 pe-3" style={{fontSize: 'small'}} key={result.itemId}>({result.itemCount}표)</span>
 								) : ('') )

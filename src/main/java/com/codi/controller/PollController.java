@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codi.dto.PollRequest;
@@ -54,7 +55,8 @@ public class PollController {
 	}
 	
 	@GetMapping("/get")
-	public ResponseEntity<List<PollResponse>> getOutfitPoll(@RequestHeader String city,@RequestHeader String district){
+	public ResponseEntity<List<PollResponse>> getOutfitPoll(@RequestParam("city") String city,
+															@RequestParam("district") String district){
 		
 		log.info("*********getOutfitPoll*********");
 		
