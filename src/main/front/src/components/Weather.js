@@ -11,7 +11,6 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Stack from 'react-bootstrap/Stack';
 
 function Weather() {
 	
@@ -48,6 +47,7 @@ function Weather() {
 	const [pollItems, setPollItems] = useState([]); //기온별 착장 아이템 설문
 	const [selectedItems, setSelectedItems] = useState([]); //설문에서 선택한 착장 아이템
 	const [pollResult, setPollResult] = useState([]); //기온별 착장 아이템 설문 결과
+	const [maxCountItemId, setMaxCountItemId] = useState([]);
 	
 	const [loading, setLoading] = useState(false); //로딩
 	const [pollYn, setPollYn] = useState(false); //설문여부
@@ -61,12 +61,10 @@ function Weather() {
 		} catch (error) {
 			PositionErrorCallback(error);
 		}
-		
 	}
 	
 	const pollYnCheck = async () => {
-		debugger;
-		//TODO : localStorage에 저장되어있는 city와 district, selectedItems를 비교
+
 		if (
 			localStorage.getItem("pollDate") === now &&
 			localStorage.getItem("pollCity") === text.city &&
@@ -128,7 +126,6 @@ function Weather() {
 		setItem(outfitItemData);
 		setPollItems(outfitItemData);
 		setLoading(true);
-		
 	}
 	
 	const PositionErrorCallback = async (error) => {
@@ -193,6 +190,17 @@ function Weather() {
 		pollYnCheck();
 	}, [loading]);
 	
+	useEffect(() => {
+		
+		if (pollResult.length > 0) {
+			const maxCount = Math.max(...pollResult.map(result => result.itemCount));
+			const maxItems = pollResult.filter(result => result.itemCount === maxCount);
+			const maxIds = maxItems.map(item => item.itemId);
+			setMaxCountItemId(maxIds);
+		}
+	}, [pollResult]);
+	
+	
 	if (!loading){
 		return (
 			<Card className="w-50 position-relative" bg='secondary' text='light'>
@@ -247,26 +255,26 @@ function Weather() {
 				<Card.Body>
 					<Card.Title className="fs-3 d-flex align-items-center">
 						<BsCheckCircleFill size='25' className="me-2 top"/>
-						오늘 {text.district} 사람들은 뭐 입었지? 
+						오늘 사람들은 뭐 입었지? 
 					</Card.Title>
-					(*{now} 기준)
 				</Card.Body>
 				<ListGroup>
 					{pollItems && pollItems.map((pollItem) => (
 						<ListGroup.Item
+							style={{ backgroundColor: maxCountItemId.includes(pollItem.id) ? '#ced4da' : '' }}
 							className="position-relative"
-							variant="secondary"
 							key={pollItem.id}
 						>
 							{selectedItems.includes(pollItem.id) && <BsCheckLg className="me-2"/>} {pollItem.itemName}
 							{pollResult && pollResult.map((result) => (
 			                    result.itemId === pollItem.id ? (
-									<span className="position-absolute end-0 pe-3" style={{fontSize: 'small'}} key={result.itemId}>({result.itemCount}표)</span>
+									<small className="position-absolute end-0 pe-3" key={result.itemId}>({result.itemCount}표)</small>
 								) : ('') )
 							)}
 						</ListGroup.Item>
 					))}
 				</ListGroup>
+				<Card.Footer className="text-end small">{now} {text.city} {text.district} 기준</Card.Footer>
 			</Card>
 		)}
 		</>
