@@ -36,7 +36,7 @@ public class MemberService {
     public MemberResponse findMemberById (String accessToken) throws InvalidTokenException{
     	//액세스 토큰이 유효한 경우 회원 고유 아이디 추출하여 회원 정보 조회
     	if (tokenProvider.isValidateToken(accessToken)) {
-    		Long id = tokenProvider.getUserIdFromToken(accessToken.substring(7));
+    		Long id = tokenProvider.getUserIdFromToken(accessToken);
         	Member member = Optional.ofNullable(memberRepository.findMemberById(id)).orElseThrow(
     							() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다. \n member_id : " + id.toString()));
         	return new MemberResponse(member);

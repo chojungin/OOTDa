@@ -1,7 +1,6 @@
 package com.codi.controller;
 
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +17,6 @@ import com.codi.exception.LoginFailedException;
 import com.codi.exception.MemberNotFoundException;
 import com.codi.service.AuthService;
 import com.codi.service.MemberService;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
 
 import com.codi.dto.AuthRequest;
 

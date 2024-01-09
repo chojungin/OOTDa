@@ -29,7 +29,7 @@ public class MemberController {
     public ResponseEntity<MemberResponse> getMember(@RequestHeader("Authorization") String accessToken) {
 		
 		try {
-			MemberResponse response = memberService.findMemberById(accessToken);
+			MemberResponse response = memberService.findMemberById(accessToken.substring(7)); //'Bearer '제외
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 			
 		} catch (Exception e) {
@@ -42,7 +42,7 @@ public class MemberController {
     public ResponseEntity<MemberResponse> putMember(@RequestHeader("Authorization") String accessToken,
     												@RequestBody MemberRequest request) {
 		try {
-			MemberResponse response = memberService.findMemberById(accessToken);
+			MemberResponse response = memberService.findMemberById(accessToken.substring(7)); //'Bearer '제외
 			//TODO
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 			
@@ -57,7 +57,7 @@ public class MemberController {
     public ResponseEntity<?> deleteMember(@RequestHeader("Authorization") String accessToken) {
 		
 		try {
-			memberService.findMemberById(accessToken);
+			memberService.findMemberById(accessToken.substring(7)); //'Bearer '제외
 			//TODO
 			return ResponseEntity.status(HttpStatus.OK).build();
 			

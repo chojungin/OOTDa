@@ -10,7 +10,7 @@ import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/esm/Container';
 
 function Member() {
-	
+
 	const [loading, setLoading] = useState(false);
 	const [member, setMember] = useState({});
 	
@@ -26,18 +26,34 @@ function Member() {
 	const months = Array.from({ length: 12 }, (_,index) => String(index + 1).padStart(2, '0'));
 	const days = Array.from({ length: 31 }, (_,index) => String(index + 1).padStart(2, '0'));
 	
-	
 	//비밀번호 일치 확인
     const isPwMatched = password === passwordCheck;
 	
+	const FetchData = async () => {
+		
+		try {
+			
+			const userInfo = await getMember();
+			setMember(userInfo);
+			setLoading(true);
+			
+		} catch (error) {
+			
+			console.log(error);
+		}
+	}
+	
 	useEffect(() => {
-		
-		setMember(getMember());
-		setLoading(true);
-		
-		console.log(loading + " \n " + member);
-		
+		FetchData();
 	},[]);
+	
+	if (!loading){
+		return (
+			<Container className="py-5">
+				Loading....
+			</Container>
+		);
+	}
 	
 	return (
 		<Container className="py-5">

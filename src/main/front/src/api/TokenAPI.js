@@ -8,7 +8,7 @@ export const tokenAPI = axios.create({
     //baseURL: 'http://localhost:8080',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${TOKEN_TYPE} ${ACCESS_TOKEN}`,
+        'Authorization': TOKEN_TYPE + " " + ACCESS_TOKEN,
         'REFRESH_TOKEN': REFRESH_TOKEN,
     },
 });
@@ -38,7 +38,7 @@ const refreshAccessToken = async () => {
 		});
 }
 
-export const clearLoginInfo = () => {
+export const clearLoginInfo = async () => {
 	localStorage.removeItem("tokenType");
 	localStorage.removeItem("accessToken");
 	localStorage.removeItem("refreshToken");
@@ -63,7 +63,7 @@ tokenAPI.interceptors.response.use(
 		        
 		    } else if (error.response.status === 401) { //401 Unauthorized : RefreshToken이 유효하지 않은 상태
 				//localStorage.clear();
-				clearLoginInfo();
+				await clearLoginInfo();
 				alert("로그인이 만료되어 로그아웃 되었습니다.");
 				window.location.href = "/";
 			}

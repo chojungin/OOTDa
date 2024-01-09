@@ -94,13 +94,3 @@ public class SecurityConfigure {
         return http.build();
     }
 }
-
-/*.requestMatchers(
-new MvcRequestMatcher(introspector, "/"),
-new MvcRequestMatcher(introspector, "/login"),
-new MvcRequestMatcher(introspector, "/join"),
-new MvcRequestMatcher(introspector, "/setting"),
-new MvcRequestMatcher(introspector, "/member"),
-new MvcRequestMatcher(introspector, "/images")
-).permitAll() //front 이동 누구나 허용
-*/

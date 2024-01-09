@@ -13,12 +13,16 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.codi.service.MemberService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
@@ -37,7 +41,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     	String accessToken = getTokenFromRequest(request);
     	
     	if (accessToken != null && tokenProvider.isValidateToken(accessToken)) { //권한이 있는 토큰인지 여부 확인
-
+    		
     		//(2) 토큰에서 정보를 추출하여 확인 후 인증 토큰으로 반환하고 인증 정보를 등록
         	UsernamePasswordAuthenticationToken authentication = getAuthenticationFromToken(accessToken);
         	authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

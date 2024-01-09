@@ -89,7 +89,6 @@ public class AuthService {
 	@Transactional
 	public String refreshToken(String refreshToken) throws TokenNotFoundException, InvalidTokenException{
 		//리프레시 토큰이 유효한 경우 권한 정보로 새로운 액세스 토큰을 생성하여 업데이트
-		log.info("************findMemberById refreshToken : "+refreshToken);
 		if (tokenProvider.isValidateToken(refreshToken)) {
 			Auth auth = authRepository.findAuthByRefreshToken(refreshToken).orElseThrow(() -> {
     			throw new TokenNotFoundException("refresh_token을 찾을 수 없습니다.");

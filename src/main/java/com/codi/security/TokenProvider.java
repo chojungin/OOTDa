@@ -1,11 +1,13 @@
 package com.codi.security;
 
+import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +35,7 @@ public class TokenProvider {
     @Value("${refreshTokenExpirationTime}")
     private Long refreshTokenExpirationTime;
     
+     
     //액세스 토큰을 생성하는 메소드
     public String createAccessToken(Authentication authentication) {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -56,8 +61,9 @@ public class TokenProvider {
     }
     
     //토큰 유효성 검증
-    public Boolean isValidateToken(String token) {
+    public Boolean isValidateToken(String token) throws UnsupportedJwtException, MalformedJwtException, SignatureException, ExpiredJwtException, IllegalArgumentException{
         try {
+        	log.info("isValidateToken::::::"+token);
             Jwts.parserBuilder()
 	            .setSigningKey(secretKey.getBytes())
 	            .build()
