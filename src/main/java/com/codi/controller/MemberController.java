@@ -28,6 +28,8 @@ public class MemberController {
 	@GetMapping("/get")
     public ResponseEntity<MemberResponse> getMember(@RequestHeader("Authorization") String accessToken) {
 		
+		log.info("*********getMember*********");
+		
 		try {
 			MemberResponse response = memberService.findMemberById(accessToken.substring(7)); //'Bearer '제외
 			return ResponseEntity.status(HttpStatus.OK).body(response);

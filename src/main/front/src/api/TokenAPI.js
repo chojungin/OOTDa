@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const TOKEN_TYPE = localStorage.getItem("tokenType");
+let TOKEN_TYPE = localStorage.getItem("tokenType");
 let ACCESS_TOKEN = localStorage.getItem("accessToken"); 
-let REFRESH_TOKEN = localStorage.getItem("refreshToken");
+const REFRESH_TOKEN = localStorage.getItem("refreshToken");
 
 export const tokenAPI = axios.create({
-    //baseURL: 'http://localhost:8080',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': TOKEN_TYPE + " " + ACCESS_TOKEN,
@@ -29,7 +28,7 @@ export const deleteMember = async () => {
 
 //AccessToken을 refresh
 const refreshAccessToken = async () => {
-    await tokenAPI.get('/api/auth/refresh')
+	await tokenAPI.get('/api/auth/refresh')
 	    .then((response) => { 
 			//refresh 성공
 			ACCESS_TOKEN = response.data;
@@ -55,11 +54,11 @@ tokenAPI.interceptors.response.use(
 		
 		if (error.config && error.response) {
 			
-			console.log("tokenAPI 인터셉터 :::: "+error);
-			
 			if (error.response.status === 403) { //403 Forbidden : AccessToken이 유효하지 않은 상태
-		        await refreshAccessToken();
-		        return tokenAPI(error.config);
+				
+				console.log("tokenAPI 403 "+error);
+				await refreshAccessToken();
+				return tokenAPI(error.config);
 		        
 		    } else if (error.response.status === 401) { //401 Unauthorized : RefreshToken이 유효하지 않은 상태
 				//localStorage.clear();
@@ -71,3 +70,5 @@ tokenAPI.interceptors.response.use(
 	    return Promise.reject(error);
 	}
 );
+
+

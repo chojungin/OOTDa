@@ -2,7 +2,6 @@ import NavBar from "./NavBar";
 import Weather from "./Weather";
 import Container from "react-bootstrap/esm/Container";
 import Stack from 'react-bootstrap/Stack';
-import { useState } from "react";
 
 function Home () {
 	

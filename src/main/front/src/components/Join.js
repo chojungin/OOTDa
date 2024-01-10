@@ -165,7 +165,7 @@ function Join() {
 							<option value="">year</option>
 							{years.map((year) => (
 								<option key={year} value={year}>
-									{year}
+									{year}년
 								</option>
 							))}
 					    </Form.Select>
@@ -175,7 +175,7 @@ function Join() {
 							<option value="">month</option>
 							{months.map((month) => (
 								<option key={month} value={month}>
-									{month}
+									{month}월
 								</option>
 							))}
 					    </Form.Select>
@@ -185,7 +185,7 @@ function Join() {
 							<option value="">day</option>
 							{days.map((day) => (
 								<option key={day} value={day}>
-									{day}
+									{day}일
 								</option>
 							))}
 					    </Form.Select>

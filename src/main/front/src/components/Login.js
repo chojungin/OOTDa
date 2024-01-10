@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -13,8 +12,6 @@ function Login() {
 	
 	const [account, setAccount] = useState('');
 	const [password, setPassword] = useState('');
-	
-	const navigate = useNavigate();
 	
     //로그인
     const onClickLogin = async (e) => {
@@ -40,7 +37,7 @@ function Login() {
   				localStorage.setItem("userName", response.data.userName);
   				localStorage.setItem("roleType", response.data.roleType);
 	            
-	            navigate('/');
+	            window.location.href = "/";
 	            
 		        }).catch((error) => {
 

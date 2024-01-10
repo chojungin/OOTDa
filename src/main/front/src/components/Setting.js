@@ -31,12 +31,6 @@ function Setting (){
 	
 	const navigate = useNavigate();
 	
-	useEffect((link) => {
-		
-	    navigate(link);
-	    
-	}, [navigate]);
-	
 	return (
 		<div className="bg-dark text-light vh-100">
 			<Container className="py-3">
